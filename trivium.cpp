@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	unsigned int iv[scale], _iv[scale];
 	memset(iv, 0, sizeof(unsigned int)* scale);
 	for (int i = 0; i < scale; i++){
-		int high = random(65536), low = random(65536);
+		int high = random(65536 * 2 - 1) - 65535, low = random(65536 * 2 - 1) - 65535;
 		iv[i] = (high << 16) | low;
 	}
 	iv[scale - 1] &= (1 << (N % 32)) - 1;
@@ -47,9 +47,9 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	memcpy(_iv, iv, sizeof(unsigned int)* scale);
 	for (unsigned int i = 0; i < UINT_MAX; i++){
-		char t0 = (binary(3 * w[0]) + binary(3 * w[2] - 1) & binary(3 * w[2] - 2) + binary(3 * w[4])) & 1,
-			t1 = (binary(3 * w[3]) + binary(3 * w[5] - 1) & binary(3 * w[5] - 2) + binary(3 * w[7])) & 1,
-			t2 = (binary(3 * w[6]) + binary(3 * w[8] - 1) & binary(3 * w[8] - 2) + binary(3 * w[1])) & 1;
+		char t0 = (binary(3 * w[0]) + (binary(3 * w[2] - 1) & binary(3 * w[2] - 2)) + binary(3 * w[4])) & 1,
+			t1 = (binary(3 * w[3]) + (binary(3 * w[5] - 1) & binary(3 * w[5] - 2)) + binary(3 * w[7])) & 1,
+			t2 = (binary(3 * w[6]) + (binary(3 * w[8] - 1) & binary(3 * w[8] - 2)) + binary(3 * w[1])) & 1;
 		for (int j = scale - 1; j > 0; j--){
 			iv[j] <<= 1;
 			iv[j] |= (iv[j - 1] >> 31);
