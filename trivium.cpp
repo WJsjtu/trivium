@@ -42,11 +42,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		int high = random(65536 * 2 - 1) - 65535, low = random(65536 * 2 - 1) - 65535;
 		iv[i] = (high << 16) | low;
 	}
+	//iv[0] = 32354313;
+	//iv[1] = 85432045;
 	iv[scale - 1] &= (1 << (N % 32)) - 1;
 	print(iv);
 
 	memcpy(_iv, iv, sizeof(unsigned int)* scale);
-	for (unsigned int i = 0; i < UINT_MAX; i++){
+	for (unsigned __int64 i = 0; i < 18446744073709551615; i++){
 		char t0 = (binary(3 * w[0]) + (binary(3 * w[2] - 1) & binary(3 * w[2] - 2)) + binary(3 * w[4])) & 1,
 			t1 = (binary(3 * w[3]) + (binary(3 * w[5] - 1) & binary(3 * w[5] - 2)) + binary(3 * w[7])) & 1,
 			t2 = (binary(3 * w[6]) + (binary(3 * w[8] - 1) & binary(3 * w[8] - 2)) + binary(3 * w[1])) & 1;
@@ -60,7 +62,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		replace(3 * w[5] + 1, t1);
 
 		iv[scale - 1] &= (1 << (N % 32)) - 1;
-		print(iv);
+		//print(iv);
 		/*
 		print(iv);
 		print(_iv);
@@ -77,7 +79,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 		}
 		if (k == scale){
-			printf("%d\n", i);
+			printf("%I64u\n", i);
 			system("pause");
 			return 0;
 		}
